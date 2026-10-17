@@ -6,7 +6,13 @@ import Kaudio
 struct KaudioExportTests {
     @Test("Kaudio swift module imported cleanly")
     func testSwiftModuleLoads() throws {
-        #expect(Bool(true), "Kaudio swift module imported cleanly")
+        let sample = FloatSample(value: 0.5)
+        #expect(sample.toI16() == 16383)
+        let outputData = AudioOutputData.Companion.shared.new(
+            inputSampleRate: 24000,
+            outputSampleRate: 24000
+        )
+        #expect(outputData.isEmpty())
     }
 }
 #elseif canImport(XCTest)
@@ -15,7 +21,13 @@ import Kaudio
 
 final class KaudioExportTests: XCTestCase {
     func testSwiftModuleLoads() throws {
-        XCTAssertTrue(true, "Kaudio swift module imported cleanly")
+        let sample = FloatSample(value: 0.5)
+        XCTAssertEqual(sample.toI16(), 16383)
+        let outputData = AudioOutputData.Companion.shared.new(
+            inputSampleRate: 24000,
+            outputSampleRate: 24000
+        )
+        XCTAssertTrue(outputData.isEmpty())
     }
 }
 #endif
